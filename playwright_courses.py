@@ -40,17 +40,20 @@ with sync_playwright() as playwright:
     page.goto("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses")
 
     # Проверяем, что отображается страница с заголовком "Courses"
-    dashboard_header = page.get_by_test_id('courses-list-toolbar-title-text')
-    expect(dashboard_header).to_be_visible()
-    expect(dashboard_header).to_have_text("Courses")
+    courses_title = page.get_by_test_id('courses-list-toolbar-title-text')
+    expect(courses_title).to_be_visible()
+    expect(courses_title).to_have_text('Courses')
+
+    # Проверяем, что отображается иконка с папкой
+    empty_view_icon = page.get_by_test_id('courses-list-empty-view-icon')
+    expect(empty_view_icon).to_be_visible()
 
     # Проверяем, что отображается блок с текстом "There is no results"
-    dashboard_header = page.get_by_test_id('courses-list-empty-view-title-text')
-    expect(dashboard_header).to_be_visible()
-    expect(dashboard_header).to_have_text("There is no results")
+    empty_view_title = page.get_by_test_id('courses-list-empty-view-title-text')
+    expect(empty_view_title).to_be_visible()
+    expect(empty_view_title).to_have_text('There is no results')
 
     # Проверяем, что отображается блок с текстом "Results from the load test pipeline will be displayed here"
-    dashboard_header = page.get_by_test_id('courses-list-empty-view-description-text')
-    expect(dashboard_header).to_be_visible()
-    expect(dashboard_header).to_have_text("Results from the load test pipeline will be displayed here")
-
+    empty_view_description = page.get_by_test_id('courses-list-empty-view-description-text')
+    expect(empty_view_description).to_be_visible()
+    expect(empty_view_description).to_have_text('Results from the load test pipeline will be displayed here')
