@@ -1,6 +1,9 @@
 from playwright.sync_api import sync_playwright, expect
+import pytest
 
 
+@pytest.mark.regression
+@pytest.mark.courses
 def test_empty_courses_list():
     with sync_playwright() as playwright:
         # Запускаем Chromium браузер в обычном режиме (не headless)
