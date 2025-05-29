@@ -26,7 +26,7 @@ def initialize_browser_state(playwright: Playwright):
     registration_button.click()
     # Сохраняем состояние браузера (куки и localStorage) в файл для дальнейшего использования
     context.storage_state(path="browser-state.json")
-
+    # Закрываем браузер
     browser.close()
 
 
