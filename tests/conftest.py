@@ -27,6 +27,8 @@ def initialize_browser_state(playwright: Playwright):
     # Сохраняем состояние браузера (куки и localStorage) в файл для дальнейшего использования
     context.storage_state(path="browser-state.json")
 
+    browser.close()
+
 
 @pytest.fixture
 def chromium_page_with_state(playwright: Playwright, initialize_browser_state) -> Page:
@@ -34,4 +36,5 @@ def chromium_page_with_state(playwright: Playwright, initialize_browser_state) -
     context = browser.new_context(storage_state="browser-state.json")  # Указываем файл с сохраненным состоянием
     page = context.new_page()
     yield page
+    browser.close()
 
