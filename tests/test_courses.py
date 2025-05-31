@@ -1,29 +1,49 @@
-from playwright.sync_api import expect, Page
 import pytest
+from pages.courses_list_page import CoursesListPage
+from pages.create_course_page import CreateCoursePage
 
 
 @pytest.mark.regression
 @pytest.mark.courses
-def test_empty_courses_list(chromium_page_with_state: Page):
-    # Переходим на страницу входа
-    chromium_page_with_state.goto("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses")
+def test_create_course(courses_list_page: CoursesListPage, create_course_page: CreateCoursePage):
+    courses_list_page.visit("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses/create")
+    # проверяем наличие заголовка "Create course"
+    create_course_page.check_visible_create_course_title()
+    # проверяем, что кнопка создания курса недоступна для нажатия
+    create_course_page.check_disabled_create_course_button()
+    # проверяем, что отображается пустой блок для предпросмотра изображения
+    create_course_page.check_visible_image_preview_empty_view()
+    # проверяем, что блок загрузки изображения отображается в состоянии, когда картинка не выбрана
+    create_course_page.check_visible_image_upload_view()
+    # проверяем, что форма создания курса отображается и содержит значения по умолчанию
+    create_course_page.check_visible_create_course_form(
+        title="", estimated_time="", description="", max_score="0", min_score="0"
+    )
+    # проверяем наличие заголовка "Exercises"
+    create_course_page.check_visible_exercises_title()
+    # проверяем наличие кнопки создания задания
+    create_course_page.check_visible_create_exercise_button()
+    # проверяем, что отображается блок с пустыми заданиями
+    create_course_page.check_visible_exercises_empty_view()
+    # загружаем изображение для превью курса
+    create_course_page.upload_preview_image(file="../testdata/files/image.png")
+    # проверяем, что блок загрузки изображения отображает состояние, когда картинка успешно загружена
+    create_course_page.check_visible_image_upload_view()
+    # заполняем форму создания курса
+    create_course_page.fill_create_course_form(
+        title="Playwright", estimated_time="2 weeks",
+        description="Playwright", max_score="100", min_score="10"
+    )
+    # нажимаем на кнопку создания курса
+    create_course_page.click_create_course_button()
 
-    # Проверяем, что отображается страница с заголовком "Courses"
-    courses_title = chromium_page_with_state.get_by_test_id('courses-list-toolbar-title-text')
-    expect(courses_title).to_be_visible()
-    expect(courses_title).to_have_text('Courses')
-
-    # Проверяем, что отображается иконка с папкой
-    empty_view_icon = chromium_page_with_state.get_by_test_id('courses-list-empty-view-icon')
-    expect(empty_view_icon).to_be_visible()
-
-    # Проверяем, что отображается блок с текстом "There is no results"
-    empty_view_title = chromium_page_with_state.get_by_test_id('courses-list-empty-view-title-text')
-    expect(empty_view_title).to_be_visible()
-    expect(empty_view_title).to_have_text('There is no results')
-
-    # Проверяем, что отображается блок с текстом "Results from the load test pipeline will be displayed here"
-    empty_view_description = chromium_page_with_state.get_by_test_id('courses-list-empty-view-description-text')
-    expect(empty_view_description).to_be_visible()
-    expect(empty_view_description).to_have_text('Results from the load test pipeline will be displayed here')
+    # после редиректа на страницу со списком курсов, проверяем наличие заголовка
+    courses_list_page.check_visible_courses_title()
+    # проверяем наличие кнопки создания курса
+    courses_list_page.check_visible_create_course_button()
+    # проверяем корректность отображаемых данных на карточке курса
+    courses_list_page.check_visible_course_card(
+        index=0, title="Playwright", max_score="100", min_score="10",
+        estimated_time="2 weeks"
+    )
 
