@@ -26,7 +26,7 @@ def test_create_course(courses_list_page: CoursesListPage, create_course_page: C
     # проверяем, что отображается блок с пустыми заданиями
     create_course_page.check_visible_exercises_empty_view()
     # загружаем изображение для превью курса
-    create_course_page.upload_preview_image(file="../testdata/files/image.png")
+    create_course_page.upload_preview_image(file="./testdata/files/image.png")
     # проверяем, что блок загрузки изображения отображает состояние, когда картинка успешно загружена
     create_course_page.check_visible_image_upload_view()
     # заполняем форму создания курса
