@@ -47,3 +47,11 @@ def test_create_course(courses_list_page: CoursesListPage, create_course_page: C
         estimated_time="2 weeks"
     )
 
+def test_empty_courses_list(courses_list_page: CoursesListPage):
+    # Переходим на страницу курсов
+    courses_list_page.visit("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses")
+    # Проверяем, что отображается страница с заголовком "Courses"
+    courses_list_page.check_visible_courses_title()
+    # Проверяем, что отображается блок с отсутствием курсов
+    courses_list_page.check_visible_empty_view()
+
