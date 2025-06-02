@@ -12,7 +12,7 @@ def test_dashboard_displaying(dashboard_page_with_state: DashboardPage):
     # Проверяем, что компонент Sidebar виден и корректно отрисован.
     dashboard_page_with_state.sidebar.check_visible()
     # проверяем страницу
-    dashboard_page_with_state.check_visible_dashboard_title()
+    dashboard_page_with_state.toolbar_view.check_visible()
     dashboard_page_with_state.check_visible_scores_chart()
     dashboard_page_with_state.check_visible_courses_chart()
     dashboard_page_with_state.check_visible_students_chart()
