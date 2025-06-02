@@ -12,9 +12,7 @@ def test_create_course(courses_list_page: CoursesListPage, create_course_page: C
     # проверяем, что кнопка создания курса недоступна для нажатия
     create_course_page.check_disabled_create_course_button()
     # проверяем, что отображается пустой блок для предпросмотра изображения
-    create_course_page.check_visible_image_preview_empty_view()
-    # проверяем, что блок загрузки изображения отображается в состоянии, когда картинка не выбрана
-    create_course_page.check_visible_image_upload_view()
+    create_course_page.image_upload_widget.check_visible(is_image_uploaded=False)
     # проверяем, что форма создания курса отображается и содержит значения по умолчанию
     create_course_page.check_visible_create_course_form(
         title="", estimated_time="", description="", max_score="0", min_score="0"
@@ -26,9 +24,9 @@ def test_create_course(courses_list_page: CoursesListPage, create_course_page: C
     # проверяем, что отображается блок с пустыми заданиями
     create_course_page.check_visible_exercises_empty_view()
     # загружаем изображение для превью курса
-    create_course_page.upload_preview_image(file="./testdata/files/image.png")
+    create_course_page.image_upload_widget.upload_preview_image('./testdata/files/image.png')
     # проверяем, что блок загрузки изображения отображает состояние, когда картинка успешно загружена
-    create_course_page.check_visible_image_upload_view()
+    create_course_page.image_upload_widget.check_visible(is_image_uploaded=True)
     # заполняем форму создания курса
     create_course_page.fill_create_course_form(
         title="Playwright", estimated_time="2 weeks",
@@ -36,13 +34,10 @@ def test_create_course(courses_list_page: CoursesListPage, create_course_page: C
     )
     # нажимаем на кнопку создания курса
     create_course_page.click_create_course_button()
-
-    # после редиректа на страницу со списком курсов, проверяем наличие заголовка
-    courses_list_page.check_visible_courses_title()
-    # проверяем наличие кнопки создания курса
-    courses_list_page.check_visible_create_course_button()
+    # после редиректа на страницу со списком курсов, проверяем наличие заголовка и кнопки
+    courses_list_page.toolbar_view.check_visible()
     # проверяем корректность отображаемых данных на карточке курса
-    courses_list_page.check_visible_course_card(
+    courses_list_page.course_view.check_visible(
         index=0, title="Playwright", max_score="100", min_score="10",
         estimated_time="2 weeks"
     )
@@ -57,10 +52,8 @@ def test_empty_courses_list(courses_list_page: CoursesListPage):
     courses_list_page.navbar.check_visible("username")
     # Проверяем, что компонент Sidebar виден и корректно отрисован.
     courses_list_page.sidebar.check_visible()
-    # Проверяем, что отображается страница с заголовком "Courses"
-    courses_list_page.check_visible_courses_title()
-    # Проверяем, что что кнопка для создания нового курса отображается
-    courses_list_page.check_visible_create_course_button()
+    # Проверяем, что отображается страница с заголовком "Courses" и кнопки
+    courses_list_page.toolbar_view.check_visible()
     # Проверяем, что отображается блок с отсутствием курсов
     courses_list_page.check_visible_empty_view()
 
