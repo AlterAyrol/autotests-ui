@@ -12,7 +12,7 @@ def test_create_course(courses_list_page: CoursesListPage, create_course_page: C
     # проверяем, что отображается пустой блок для предпросмотра изображения
     create_course_page.image_upload_widget.check_visible(is_image_uploaded=False)
     # проверяем, что форма создания курса отображается и содержит значения по умолчанию
-    create_course_page.form.check_visible(
+    create_course_page.create_course_form.check_visible(
         title="", estimated_time="", description="", max_score="0", min_score="0"
     )
     # проверяем наличие заголовка "Exercises" и наличие кнопки создания задания
@@ -24,7 +24,7 @@ def test_create_course(courses_list_page: CoursesListPage, create_course_page: C
     # проверяем, что блок загрузки изображения отображает состояние, когда картинка успешно загружена
     create_course_page.image_upload_widget.check_visible(is_image_uploaded=True)
     # заполняем форму создания курса
-    create_course_page.form.fill(
+    create_course_page.create_course_form.fill(
         title="Playwright", estimated_time="2 weeks",
         description="Playwright", max_score="100", min_score="10"
     )

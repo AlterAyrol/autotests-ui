@@ -16,7 +16,7 @@ class CreateCoursePage(BasePage):
         self.image_upload_widget = ImageUploadWidgetComponent(page, 'create-course-preview')
         self.exercises_empty_view = EmptyViewComponent(page, 'create-course-exercises')
         self.create_exercise_form = CreateCourseExerciseFormComponent(page)
-        self.form = CreateCourseFormComponent(page)
+        self.create_course_form = CreateCourseFormComponent(page)
         self.create_toolbar_view = CreateCourseToolbarViewComponent(page)
         self.exercises_toolbar_view = CreateCourseExercisesToolbarViewComponent(page)
 
