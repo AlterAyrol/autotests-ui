@@ -8,6 +8,9 @@ from tools.allure.tags import AllureTag
 from tools.allure.epics import AllureEpic
 from tools.allure.features import AllureFeature
 from tools.allure.stories import AllureStory
+from tools.allure.suite import AllureSuite
+from tools.allure.parent_suite import AllureParentSuite
+from tools.allure.sub_suite import AllureSubSuite
 
 
 @pytest.mark.regression
@@ -16,6 +19,9 @@ from tools.allure.stories import AllureStory
 @allure.epic(AllureEpic.LMS)
 @allure.feature(AllureFeature.COURSES)
 @allure.story(AllureStory.COURSES)
+@allure.parent_suite(AllureParentSuite.LMS)
+@allure.suite(AllureSuite.COURSES)
+@allure.sub_suite(AllureSubSuite.COURSES)
 class TestCourses:
 
     @allure.title("Create course")
