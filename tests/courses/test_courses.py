@@ -50,3 +50,40 @@ class TestCourses:
         courses_list_page.toolbar_view.check_visible()
         # Проверяем, что отображается блок с отсутствием курсов
         courses_list_page.check_visible_empty_view()
+
+    def test_edit_course(self, courses_list_page: CoursesListPage, create_course_page: CreateCoursePage):
+        courses_list_page.visit("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses/create")
+        # загружаем изображение для превью курса
+        create_course_page.image_upload_widget.upload_preview_image('./testdata/files/image.png')
+        # проверяем, что блок загрузки изображения отображает состояние, когда картинка успешно загружена
+        create_course_page.image_upload_widget.check_visible(is_image_uploaded=True)
+        # заполняем форму создания курса
+        create_course_page.create_course_form.fill(
+            title="Playwright", estimated_time="2 weeks",
+            description="Playwright", max_score="100", min_score="10"
+        )
+        # нажимаем на кнопку создания курса
+        create_course_page.create_toolbar_view.click_create_course_button()
+        # после редиректа на страницу со списком курсов, проверяем наличие заголовка и кнопки
+        courses_list_page.toolbar_view.check_visible()
+        # проверяем корректность отображаемых данных на карточке курса
+        courses_list_page.course_view.check_visible(
+            index=0, title="Playwright", max_score="100", min_score="10",
+            estimated_time="2 weeks"
+        )
+        # нажимаем кнопку edit через меню карточки курса
+        courses_list_page.course_view.menu.click_edit(index=0)
+        # заполняем отредактированную форму создания курса
+        create_course_page.create_course_form.fill(
+            title="New title", estimated_time="1 month",
+            description="New playwright", max_score="70", min_score="20"
+        )
+        # нажимаем на кнопку создания курса для сохранения изменений
+        create_course_page.create_toolbar_view.click_create_course_button()
+        # после редиректа на страницу со списком курсов, проверяем наличие заголовка и кнопки
+        courses_list_page.toolbar_view.check_visible()
+        # проверяем корректность новых отображаемых данных на карточке курса
+        courses_list_page.course_view.check_visible(
+            index=0, title="New title", max_score="70", min_score="20",
+            estimated_time="1 month"
+        )
