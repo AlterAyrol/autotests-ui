@@ -1,11 +1,25 @@
 import pytest
+import allure
+from allure_commons.types import Severity
+
 from pages.courses.courses_list_page import CoursesListPage
 from pages.courses.create_course_page import CreateCoursePage
+from tools.allure.tags import AllureTag
+from tools.allure.epics import AllureEpic
+from tools.allure.features import AllureFeature
+from tools.allure.stories import AllureStory
 
 
 @pytest.mark.regression
 @pytest.mark.courses
+@allure.tag(AllureTag.REGRESSION, AllureTag.COURSES)
+@allure.epic(AllureEpic.LMS)
+@allure.feature(AllureFeature.COURSES)
+@allure.story(AllureStory.COURSES)
 class TestCourses:
+
+    @allure.title("Create course")
+    @allure.severity(Severity.CRITICAL)
     def test_create_course(self, courses_list_page: CoursesListPage, create_course_page: CreateCoursePage):
         courses_list_page.visit("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses/create")
         # проверяем наличие заголовка "Create course" и что кнопка подтверждения создания курса недоступна для нажатия
@@ -39,6 +53,9 @@ class TestCourses:
             estimated_time="2 weeks"
         )
 
+
+    @allure.title("Check displaying of empty courses list")
+    @allure.severity(Severity.NORMAL)
     def test_empty_courses_list(self, courses_list_page: CoursesListPage):
         # Переходим на страницу курсов
         courses_list_page.visit("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses")
@@ -51,6 +68,9 @@ class TestCourses:
         # Проверяем, что отображается блок с отсутствием курсов
         courses_list_page.check_visible_empty_view()
 
+
+    @allure.title("Edit course")
+    @allure.severity(Severity.CRITICAL)
     def test_edit_course(self, courses_list_page: CoursesListPage, create_course_page: CreateCoursePage):
         courses_list_page.visit("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses/create")
         # загружаем изображение для превью курса
