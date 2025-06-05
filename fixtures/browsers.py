@@ -1,14 +1,21 @@
 import pytest
 from playwright.sync_api import Playwright, Page
+from _pytest.fixtures import SubRequest
 
 from pages.authentication.registration_page import RegistrationPage
 
 
 @pytest.fixture
-def chromium_page(playwright: Playwright) -> Page:
+def chromium_page(request: SubRequest, playwright: Playwright) -> Page:  # Добавили аргумент request
     browser = playwright.chromium.launch(headless=False)
-    yield browser.new_page()
-    browser.close()
+    context = browser.new_context()  # Создаем контекст для новой сессии браузера
+    context.tracing.start(screenshots=True, snapshots=True, sources=True)  # Включаем трейсинг
+
+    yield context.new_page()  # Открываем новую страницу в контексте
+
+    # В данном случае request.node.name содержит название текущего автотеста
+    context.tracing.stop(path=f'./tracing/{request.node.name}.zip')  # Сохраняем трейсинг в файл
+    browser.close()  # Закрываем браузер
 
 
 @pytest.fixture(scope="session")
@@ -30,10 +37,13 @@ def initialize_browser_state(playwright: Playwright):
 
 
 @pytest.fixture
-def chromium_page_with_state(playwright: Playwright, initialize_browser_state) -> Page:
+def chromium_page_with_state(initialize_browser_state, request: SubRequest, playwright: Playwright) -> Page:  # Добавили аргумент request
     browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context(storage_state="browser-state.json")  # Указываем файл с сохраненным состоянием
-    page = context.new_page()
-    yield page
-    browser.close()
+    context = browser.new_context(storage_state="browser-state.json")  # Создаем контекст для новой сессии браузера
+    context.tracing.start(screenshots=True, snapshots=True, sources=True)  # Включаем трейсинг
+
+    yield context.new_page()  # Открываем новую страницу в контексте
+
+    context.tracing.stop(path=f'./tracing/{request.node.name}.zip')  # Сохраняем трейсинг в файл
+    browser.close()  # Закрываем браузер
 
