@@ -4,21 +4,12 @@ from playwright.sync_api import Playwright, Page
 from _pytest.fixtures import SubRequest
 
 from pages.authentication.registration_page import RegistrationPage
+from tools.playwright.pages import initialize_playwright_page
 
 
 @pytest.fixture
 def chromium_page(request: SubRequest, playwright: Playwright) -> Page:  # Добавили аргумент request
-    browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context()  # Создаем контекст для новой сессии браузера
-    context.tracing.start(screenshots=True, snapshots=True, sources=True)  # Включаем трейсинг
-
-    yield context.new_page()  # Открываем новую страницу в контексте
-
-    # В данном случае request.node.name содержит название текущего автотеста
-    context.tracing.stop(path=f'./tracing/{request.node.name}.zip')  # Сохраняем трейсинг в файл
-    browser.close()  # Закрываем браузер
-    # Прикрепляем файл с трейсингом к Allure отчету
-    allure.attach.file(f'./tracing/{request.node.name}.zip', name='trace', extension='zip')
+    yield from initialize_playwright_page(playwright, test_name=request.node.name)
 
 
 @pytest.fixture(scope="session")
@@ -41,14 +32,9 @@ def initialize_browser_state(playwright: Playwright):
 
 @pytest.fixture
 def chromium_page_with_state(initialize_browser_state, request: SubRequest, playwright: Playwright) -> Page:  # Добавили аргумент request
-    browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context(storage_state="browser-state.json")  # Создаем контекст для новой сессии браузера
-    context.tracing.start(screenshots=True, snapshots=True, sources=True)  # Включаем трейсинг
-
-    yield context.new_page()  # Открываем новую страницу в контексте
-
-    context.tracing.stop(path=f'./tracing/{request.node.name}.zip')  # Сохраняем трейсинг в файл
-    browser.close()  # Закрываем браузер
-    # Прикрепляем файл с трейсингом к Allure отчету
-    allure.attach.file(f'./tracing/{request.node.name}.zip', name='trace', extension='zip')
+    yield from initialize_playwright_page(
+        playwright,
+        test_name=request.node.name,
+        storage_state="browser-state.json"
+    )
 
