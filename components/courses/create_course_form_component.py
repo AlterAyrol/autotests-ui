@@ -35,7 +35,7 @@ class CreateCourseFormComponent(BaseComponent):
         self.estimated_time_input.check_have_value(estimated_time)
 
         self.description_textarea.fill(description, nth=index)
-        self.description_textarea.check_value(description, nth=index)
+        self.description_textarea.check_have_value(description, nth=index)
 
         self.max_score_input.fill(max_score)
         self.max_score_input.check_have_value(max_score)
@@ -59,7 +59,7 @@ class CreateCourseFormComponent(BaseComponent):
         self.estimated_time_input.check_have_value(estimated_time)
 
         self.description_textarea.check_visible(nth=index)
-        self.description_textarea.check_value(description, nth=index)
+        self.description_textarea.check_have_value(description, nth=index)
 
         self.max_score_input.check_visible()
         self.max_score_input.check_have_value(max_score)
