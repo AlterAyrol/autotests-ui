@@ -2,6 +2,7 @@ import allure
 from playwright.sync_api import Playwright, Page
 from config import settings
 from config import settings, Browser  # Импортируем enum Browser
+from tools.playwright.mocks import mock_static_resources  # Импортируем функцию mock_static_resources
 
 
 def initialize_playwright_page(
@@ -25,6 +26,9 @@ def initialize_playwright_page(
     context.tracing.start(screenshots=True, snapshots=True, sources=True)   # Включаем трейсинг
     # Перенесли инициализацию страницы в отдельную переменную
     page = context.new_page()
+
+    # Отключаем загрузку статических ресурсов
+    mock_static_resources(page)
 
     yield page
 
