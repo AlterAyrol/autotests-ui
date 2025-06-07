@@ -1,15 +1,19 @@
 import allure
 from playwright.sync_api import Playwright, Page
 from config import settings
+from config import settings, Browser  # Импортируем enum Browser
 
 
 def initialize_playwright_page(
         playwright: Playwright,
         test_name: str,
+        browser_type: Browser,  # Передаем бразуер в качестве аргумента
         storage_state: str | None = None
 ) -> Page:
     # Используем settings.headless
-    browser = playwright.chromium.launch(headless=settings.headless)
+    # Динамически получаем нужный браузер
+    browser = playwright[browser_type].launch(headless=settings.headless)
+
     # Создаем контекст для новой сессии браузера и указываем директорию для сохранения видеозаписей
     # Используем settings.videos_dir
     context = browser.new_context(
