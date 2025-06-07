@@ -5,6 +5,7 @@ from _pytest.fixtures import SubRequest
 from pages.authentication.registration_page import RegistrationPage
 from tools.playwright.pages import initialize_playwright_page
 from config import settings
+from tools.routes import AppRoute
 
 
 @pytest.fixture
@@ -18,12 +19,13 @@ def initialize_browser_state(playwright: Playwright):
     # Используем settings.headless
     browser = playwright.chromium.launch(headless=settings.headless)
     # Создаем новый контекст браузера (новая сессия, которая изолирована от других)
-    context = browser.new_context()
+    #  контексте используется get_base_url
+    context = browser.new_context(base_url=settings.get_base_url())
     # Открываем новую страницу в рамках контекста
     page = context.new_page()
     # Переходим на страницу регистрации
     registration_page = RegistrationPage(page=page)
-    registration_page.visit('https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/registration')
+    registration_page.visit(AppRoute.REGISTRATION)
     registration_page.registration_form.fill(
         email=settings.test_user.email,  # Используем settings.test_user.email
         username=settings.test_user.username,  # Используем settings.test_user.username

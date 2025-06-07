@@ -2,6 +2,7 @@ import pytest
 import allure
 from allure_commons.types import Severity
 
+from config import settings
 from pages.courses.courses_list_page import CoursesListPage
 from pages.courses.create_course_page import CreateCoursePage
 from tools.allure.tags import AllureTag
@@ -11,6 +12,7 @@ from tools.allure.stories import AllureStory
 from tools.allure.suite import AllureSuite
 from tools.allure.parent_suite import AllureParentSuite
 from tools.allure.sub_suite import AllureSubSuite
+from tools.routes import AppRoute
 
 
 @pytest.mark.regression
@@ -27,7 +29,7 @@ class TestCourses:
     @allure.title("Create course")
     @allure.severity(Severity.CRITICAL)
     def test_create_course(self, courses_list_page: CoursesListPage, create_course_page: CreateCoursePage):
-        courses_list_page.visit("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses/create")
+        courses_list_page.visit(AppRoute.CREATE_COURSE)
         # проверяем наличие заголовка "Create course" и что кнопка подтверждения создания курса недоступна для нажатия
         create_course_page.create_toolbar_view.check_visible()
         # проверяем, что отображается пустой блок для предпросмотра изображения
@@ -41,7 +43,7 @@ class TestCourses:
         # проверяем, что отображается блок с пустыми заданиями
         create_course_page.check_visible_exercises_empty_view()
         # загружаем изображение для превью курса
-        create_course_page.image_upload_widget.upload_preview_image('./testdata/files/image.png')
+        create_course_page.image_upload_widget.upload_preview_image(settings.test_data.image_png_file)
         # проверяем, что блок загрузки изображения отображает состояние, когда картинка успешно загружена
         create_course_page.image_upload_widget.check_visible(is_image_uploaded=True)
         # заполняем форму создания курса
@@ -64,9 +66,9 @@ class TestCourses:
     @allure.severity(Severity.NORMAL)
     def test_empty_courses_list(self, courses_list_page: CoursesListPage):
         # Переходим на страницу курсов
-        courses_list_page.visit("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses")
+        courses_list_page.visit(AppRoute.MAIN_COURSE)
         # Проверяем, что компонент Navbar корректно отображается на странице
-        courses_list_page.navbar.check_visible("username")
+        courses_list_page.navbar.check_visible(username=settings.test_user.username)
         # Проверяем, что компонент Sidebar виден и корректно отрисован.
         courses_list_page.sidebar.check_visible()
         # Проверяем, что отображается страница с заголовком "Courses" и кнопки
@@ -78,9 +80,9 @@ class TestCourses:
     @allure.title("Edit course")
     @allure.severity(Severity.CRITICAL)
     def test_edit_course(self, courses_list_page: CoursesListPage, create_course_page: CreateCoursePage):
-        courses_list_page.visit("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses/create")
+        courses_list_page.visit(AppRoute.CREATE_COURSE)
         # загружаем изображение для превью курса
-        create_course_page.image_upload_widget.upload_preview_image('./testdata/files/image.png')
+        create_course_page.image_upload_widget.upload_preview_image(settings.test_data.image_png_file)
         # проверяем, что блок загрузки изображения отображает состояние, когда картинка успешно загружена
         create_course_page.image_upload_widget.check_visible(is_image_uploaded=True)
         # заполняем форму создания курса

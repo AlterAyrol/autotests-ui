@@ -59,6 +59,9 @@ class Settings(BaseSettings):
             browser_state_file=browser_state_file
         )
 
+    def get_base_url(self) -> str:
+        return f"{self.app_url}/"
+
 
 # Теперь вызываем метод initialize
 settings = Settings.initialize()
