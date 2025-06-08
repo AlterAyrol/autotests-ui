@@ -36,6 +36,7 @@ class Settings(BaseSettings):
     test_data: TestData
     videos_dir: DirectoryPath
     tracing_dir: DirectoryPath
+    allure_results_dir: DirectoryPath  # Добавили новое поле
     browser_state_file: FilePath
 
     # Добавили метод initialize
@@ -44,6 +45,7 @@ class Settings(BaseSettings):
         # Указываем пути
         videos_dir = DirectoryPath("./videos")
         tracing_dir = DirectoryPath("./tracing")
+        allure_results_dir = DirectoryPath("./allure-results")  # Создаем объект пути к папке
         browser_state_file = FilePath("browser-state.json")
 
         # Создаем директории, если они не существуют
@@ -56,6 +58,7 @@ class Settings(BaseSettings):
         return Settings(
             videos_dir=videos_dir,
             tracing_dir=tracing_dir,
+            allure_results_dir=allure_results_dir,  # Передаем allure_results_dir в инициализацию настроек
             browser_state_file=browser_state_file
         )
 
