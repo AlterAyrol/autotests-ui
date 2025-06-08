@@ -51,6 +51,7 @@ class Settings(BaseSettings):
         # Создаем директории, если они не существуют
         videos_dir.mkdir(exist_ok=True)  # Если директория сещуствует, то игнорируем ошибку
         tracing_dir.mkdir(exist_ok=True)
+        allure_results_dir.mkdir(exist_ok=True)  # Создаем папку allure-results, если она не существует
         # Создаем файл состояния браузера, если его нет
         browser_state_file.touch(exist_ok=True)  # Если файл сещуствует, то игнорируем ошибку
 
