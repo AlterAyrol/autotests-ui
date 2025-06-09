@@ -28,7 +28,7 @@ def initialize_browser_state(playwright: Playwright):
     # Открываем новую страницу в рамках контекста
     page = context.new_page()
     # Переходим на страницу регистрации
-    registration_page = RegistrationPage(page = page)
+    registration_page = RegistrationPage(page=page)
     registration_page.visit(AppRoute.REGISTRATION)
     registration_page.registration_form.fill(
         email=settings.test_user.email,  # Используем settings.test_user.email
