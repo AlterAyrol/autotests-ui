@@ -24,7 +24,7 @@ def initialize_browser_state(playwright: Playwright):
     browser = playwright.chromium.launch(headless=settings.headless)
     # Создаем новый контекст браузера (новая сессия, которая изолирована от других)
     #  контексте используется get_base_url
-    context = browser.new_context(base_url =settings.get_base_url())
+    context = browser.new_context(base_url=settings.get_base_url())
     # Открываем новую страницу в рамках контекста
     page = context.new_page()
     # Переходим на страницу регистрации
