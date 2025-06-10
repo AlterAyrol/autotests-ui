@@ -26,7 +26,7 @@ from tools.routes import AppRoute
 @allure.sub_suite(AllureSubSuite.REGISTRATION)
 class TestRegistration:
 
-    @allure.title("Registration with correct email, username and password")
+    @allure.title("Registration with correct email, username and password ")
     @allure.severity(Severity.CRITICAL)
     def test_successful_registration(self, registration_page: RegistrationPage, dashboard_page: DashboardPage):
         registration_page.visit(AppRoute.REGISTRATION)
