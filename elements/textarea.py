@@ -26,7 +26,7 @@ class Textarea(BaseElement):
         return f'{super().get_raw_locator(**kwargs)}//textarea[1]'
 
 
-    def fill(self, value: str, nth: int = 0, **kwargs):
+    def fill(self, value : str, nth: int = 0, **kwargs):
         step = f'Fill {self.type_of} "{self.name}" to value "{value}"'
 
         with allure.step(step):
